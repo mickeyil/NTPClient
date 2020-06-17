@@ -25,6 +25,9 @@ class NTPClient {
 
     byte          _packetBuffer[NTP_PACKET_SIZE];
 
+    // milliseconds accuracy decoded
+    uint16_t       _msec;
+
     void          sendNTPPacket();
 
   public:
@@ -94,6 +97,8 @@ class NTPClient {
      * @return time in seconds since Jan. 1, 1970
      */
     unsigned long getEpochTime() const;
+
+    uint16_t getEpochMSec() const { return _msec; }
 
     /**
      * Stops the underlying UDP client

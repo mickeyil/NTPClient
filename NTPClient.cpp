@@ -114,6 +114,14 @@ bool NTPClient::forceUpdate() {
 
   this->_currentEpoc = secsSince1900 - SEVENZYYEARS;
 
+  // update milliseconds accuracy
+  // Taken from: https://arduino.stackexchange.com/questions/49567/synching-local-clock-usign-ntp-to-milliseconds
+  uint32_t frac  = (uint32_t) _packetBuffer[44] << 24
+               | (uint32_t) _packetBuffer[45] << 16
+               | (uint32_t) _packetBuffer[46] <<  8
+               | (uint32_t) _packetBuffer[47] <<  0;
+  _msec = ((uint64_t) frac * 1000) >> 32;
+
   return true;  // return true after successful update
 }
 
